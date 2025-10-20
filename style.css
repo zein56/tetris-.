@@ -1,0 +1,39 @@
+body{
+    background:  #122;
+    height: 100vh;
+    padding: 0px;
+    margin: 0px;
+}
+#con{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+}
+#gameBoard{
+    display: grid;
+    grid-template-columns: repeat(10,auto);
+    height: 90%;
+    aspect-ratio: 1/2;
+}
+.box{
+    background: lightgreen;
+    border: green 1px solid;
+}
+.boxed{
+    border: 1px solid green;
+
+}
+.block{
+    background: darkgreen;
+    width: 100%;
+    height: 100%;
+}
+.blocked{
+    background: rgb(30, 42, 27);
+    width: 100%; 
+    height: 100%;
+}
+
