@@ -1,7 +1,29 @@
+let nextBlock;
+let Rblock;
+let randomIndex;
 
-AddBlock()
-var randomIndex
-function AddBlock(){
+initBoard()
+function initBoard(){
+    board = document.getElementById('gameBoard');
+    for (let i = 0; i < 230; i++) {
+        if (i<10) {
+        board.innerHTML += '<div class="box" id="0'+i+'"></div>'
+        }else
+        board.innerHTML += '<div class="box" id="'+i+'"></div>'
+    }
+    startGame()
+}
+ 
+
+
+//
+function startGame(){
+    let generateRandom = generateBlock()
+    AddBlock(generateRandom[0],generateRandom[1])
+}
+
+function generateBlock(){ 
+
     let blockTypes = [
         [25,24,14,26],
         [25,26,16,24],
@@ -11,17 +33,42 @@ function AddBlock(){
         [16,15,14,17],
         [15,16,25,26],
     ]
-    randomIndex = Math.floor(Math.random()*blockTypes.length) 
-    for (let i = 0; i < blockTypes[randomIndex].length; i++) {
+    Rblock = Math.floor(Math.random()*blockTypes.length) 
+    return [blockTypes[Rblock],Rblock]
+}
+
+function addNextBlock(blockType) {
+    const nextBlockSection = document.getElementById('nextBlockSection');
+    const nextBlockSectionBoxs = nextBlockSection.querySelectorAll('.Nbox')
+    nextBlockSectionBoxs.forEach(b=>{
+        b.innerHTML='';
+    })
+    for (let i = 0; i < 4; i++) {
+        const target = nextBlockSection.querySelector('#B' + blockType[i]);
+        if (target)
+            target.innerHTML = `<div class="Nblock"></div>`;
+    }
+}
+
+
+function AddBlock(blockType,random){
+    randomIndex = random;
+    //console.log('blockType',blockType)
+    nextBlock = generateBlock();
+    addNextBlock(nextBlock[0])
+    //console.log('nextBlock',nextBlock)
+    for (let i = 0; i < 4; i++) {
         if (i == 0) {
-            document.getElementById(blockTypes[randomIndex][i]).innerHTML = `<div class="block" id="center"></div>` 
+            document.getElementById(blockType[i]).innerHTML = `<div class="block" id="center"></div>` 
         }else{
-            document.getElementById(blockTypes[randomIndex][i]).innerHTML = `<div class="block"></div>` 
+            document.getElementById(blockType[i]).innerHTML = `<div class="block"></div>` 
         }          
     }
+    down()
 }
 addEventListener("keydown", function(event) {
     if (event.keyCode === 38) {
+        //console.log('rotate')
         rotate()
     }
 });
@@ -133,6 +180,7 @@ function rotate(){
             ]
         ]
     ]
+    //console.log(blockTypes[randomIndex])
     for (let j = 0; j < blockTypes[randomIndex][0].length; j++) {
         let Rotate = 1; 
         for (let i = 0; i < blockTypes[randomIndex][0][j].length; i++) {
@@ -178,13 +226,13 @@ function rotate(){
         }        
     }
 }
-
+ 
 setInterval(function(){
     let Drop = 1;
     let blocks = document.getElementsByClassName("block")
     for (let i = 0; i < blocks.length; i++) {
         const element = +blocks[i].parentNode.id;
-        if (element+10 <200 && document.getElementById(+element+10).className == "box") {
+        if (element+10 <230 && document.getElementById(+element+10).className == "box") {
         }else{ 
             Drop = 0;
             break;
@@ -203,8 +251,10 @@ setInterval(function(){
             element.className = "blocked"
         }
         lineTest()
+        document.getElementById('combo').innerHTML = 'X'+combo/5;
+        document.getElementById('score').innerHTML = score;
         setTimeout(function(){
-            AddBlock()
+            AddBlock(nextBlock[0],nextBlock[1])
         },500)
     }
 },1000) 
@@ -257,7 +307,7 @@ function down(){
     let blocks = document.getElementsByClassName("block")
     for (let i = 0; i < blocks.length; i++) {
         const element = +blocks[i].parentNode.id;
-        if (element+10 <200 && document.getElementById(+element+10).className == "box") {
+        if (element+10 <230 && document.getElementById(+element+10).className == "box") {
         }else{ 
             down = 0;
             break;
@@ -272,8 +322,11 @@ function down(){
         }
     }
 }
+
+var score = 0;
+var combo = 0;
 function lineTest(){
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 23; i++) {
         let line = 1
         for (let j = 0; j < 10; j++) {
             if (document.getElementById(i+""+j).innerHTML == "") {
@@ -283,21 +336,28 @@ function lineTest(){
         }
         if (line) {
             for (let j = 0; j < 10; j++) {
-                console.log(i+""+j)
+                //console.log(i+""+j)
                 document.getElementById(i+""+j).className = "box"          
                 document.getElementById(i+""+j).innerHTML = ""          
             }
-            console.log(i)
+            //console.log(i)
             for (let o = (i-1)*10+9; o >= 0; o--) {
                 if (document.getElementById(o) && document.getElementById(o).innerHTML != "") {
-                    console.log("alo",o+10)
+                    
                 document.getElementById(o+10).innerHTML = `<div class="blocked"></div>`
                 document.getElementById(o+10).className = "boxed"
                 document.getElementById(o).innerHTML = "" 
                 document.getElementById(o).className = "box"
                 }
             }
-
+            
+            score+=10+combo;
+            combo+=5;
+            //console.log(score)
+            //document.getElementById('combo').innerHTML = 'X'+combo/5;
+            //document.getElementById('score').innerHTML = score;
+        }else{
+            combo = 0;
         }
     }
 }
@@ -310,34 +370,47 @@ let currentX = 0;
 let currentY = 0;
 let isDragging = false;
  
-document.body.addEventListener('pointerdown', (e) => {
+document.body.addEventListener('touchstart', e => {
     isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY
-    //console.log(startX); 
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
 });
-document.body.addEventListener('pointerup',(e)=>{
+document.body.addEventListener('touchend', e => {
+    if (!isDragging) return;
     isDragging = false;
-})
 
-document.body.addEventListener('pointermove', (e)=>{
-    if (!isDragging)
-        return 0;
-    currentX = e.clientX;
-    currentY = e.clientY;
-    const threshold = 3;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+
+    const diffX = endX - startX;
+    const diffY = endY - startY;
+
+    if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+        rotate();
+    }
+});
+ 
+document.body.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    currentX = e.touches[0].clientX;
+    currentY = e.touches[0].clientY;
+    const threshold = 50;
     const diffX = currentX - startX;
     const diffY = currentY - startY;
-
+    //console.log(diffX)
     if (diffX > threshold) {
     right();
+    //console.log('---->')
     startX = currentX; 
-    } else if (diffX < -threshold) {
+    }  
+    if (diffX < -threshold) {
     startX = currentX; 
     Left();
+    //console.log('<----')
     }
     if (diffY > threshold) {
         down()
         startY = currentY;
     }
+    
 })

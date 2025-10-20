@@ -1,39 +1,215 @@
 body{
-    background:  #122;
-    height: 100vh;
+    background:  #123;
+    height: 100ch;
     padding: 0px;
     margin: 0px;
+    display: flex;
+    justify-content: center;
+}
+.title{
+    width: 100%;
+    position: absolute;
+    height: 50px;
+    background: #123;
+    z-index: 1;
+    text-align: center;
 }
 #con{
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    width: 60%;
     height: 100%;
-
+    background: #123;
+    padding-top: 51px;
 }
 #gameBoard{
-    display: grid;
-    grid-template-columns: repeat(10,auto);
-    height: 90%;
-    aspect-ratio: 1/2;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0px;
+    margin: 0px;
+    width: 320px;
+    height: 640px;
+    background: #123;
+    position: relative;
+    bottom: 96px;
 }
+#scoreBoard{
+    background: #345;
+    width: 200px;
+    height: 640px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+}
+#nextBlock{
+    background: #123;
+    border: 2px solid green; 
+    
+    width: 80%;
+    aspect-ratio: 3/2;
+    margin: 15px 0px;
+}
+#nextBlockSection{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6,16.69%);
+}
+.Nbox{
+    padding: 0px;
+    margin: 0px;
+    aspect-ratio: 1/1;
+    border: 1px solid green;
+}
+.Nblock{
+    background: green;
+    width: 99%;
+    height: 99%;
+    border: 1px solid green;
+}
+#score,#combo,#bestScore{
+    background: #123;
+    color: #fff;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    border: 2px solid green;
+    aspect-ratio: 4/1;
+    margin-bottom: 10px;
+}
+
+
+
 .box{
-    background: lightgreen;
+    padding: 0px;
+    margin: 0px;
+    width: 30px;
+    height: 30px;
+    background: #123;
     border: green 1px solid;
 }
 .boxed{
+    padding: 0px;
+    margin: 0px;
+   
+    width: 30px;
+    height: 30px;
     border: 1px solid green;
 
 }
 .block{
-    background: darkgreen;
+    background: darkgreen; 
     width: 100%;
     height: 100%;
 }
 .blocked{
-    background: rgb(30, 42, 27);
+    background: black;
     width: 100%; 
     height: 100%;
 }
 
+
+
+
+@media (max-width: 375px){
+    #con{
+        padding: 0;
+        width: 280px;
+        height: 560px;
+    }
+    #gameBoard{ 
+        width: 280px; 
+        height: 560px;
+        bottom: 70px;
+    }
+    .box ,.boxed{
+        width: 26px;
+        height: 26px;
+    }
+    #scoreBoard{
+        width: 0px;
+    }
+}
+
+@media (min-width: 376px) and (max-width: 414px) {
+    #con{
+        padding: 0;
+        position: relative;
+        width: 280px;
+        height: 440px;
+    }
+    #gameBoard{ 
+        position: absolute;
+        left: 0;
+        width: 220px; 
+        height: 440px;
+        bottom: 66px;
+    }
+    .box ,.boxed{
+        width: 20px;
+        height: 20px;
+    }
+    #scoreBoard{
+        position: absolute;
+        right: 0;
+        width: 60px;
+        height: 440px;
+    }
+}
+
+@media (min-width: 415px) and (max-width: 599px) {
+    #con{
+        padding: 0;
+        position: relative;
+        height: 640px;
+        width: 400px;
+    }
+    #gameBoard{ 
+        position: absolute;
+        left: 0;
+        width: 320px; 
+        height: 640px;
+        bottom: 73px;
+
+    }
+    .box ,.boxed{
+        width: 30px;
+        height: 29px;
+    }
+    #scoreBoard{
+        position: absolute;
+        right: 0;
+        width: 80px;
+        height: 640px;
+    }
+}
+@media (max-width:1024px) {
+    .title{height: 0px;}
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+    #con{
+        padding: 0;
+        position: relative;
+        width: 600px;
+    }
+    #gameBoard{ 
+        position: absolute;
+        left: 0;
+        width: 400px; 
+        height: 800px;
+        bottom: 120px;
+    }
+    .box ,.boxed{
+        width: 38px;
+        height: 38px;
+    }
+    #scoreBoard{
+        position: absolute;
+        right: 0;
+        width: 200px;
+        height: 800px;
+    }
+    
+}
