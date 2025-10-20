@@ -325,7 +325,7 @@ document.body.addEventListener('pointermove', (e)=>{
         return 0;
     currentX = e.clientX;
     currentY = e.clientY;
-    const threshold = 30;
+    const threshold = 3;
     const diffX = currentX - startX;
     const diffY = currentY - startY;
 
