@@ -64,7 +64,7 @@ function AddBlock(blockType,random){
             document.getElementById(blockType[i]).innerHTML = `<div class="block"></div>` 
         }          
     }
-    down()
+    down() 
 }
 addEventListener("keydown", function(event) {
     if (event.keyCode === 38) {

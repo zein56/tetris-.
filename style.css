@@ -1,26 +1,22 @@
 body{
     background:  #123;
-    height: 100ch;
+    height: 100vh;
     padding: 0px;
     margin: 0px;
     display: flex;
     justify-content: center;
+    margin: 100px 0px ;
+    overflow: hidden;
 }
-.title{
-    width: 100%;
-    position: absolute;
-    height: 50px;
-    background: #123;
-    z-index: 1;
-    text-align: center;
-}
+
 #con{
     display: flex;
     justify-content: center;
     width: 60%;
     height: 100%;
     background: #123;
-    padding-top: 51px;
+    
+    overflow: hidden; 
 }
 #gameBoard{
     display: flex;
@@ -32,7 +28,7 @@ body{
     height: 640px;
     background: #123;
     position: relative;
-    bottom: 96px;
+    top: -96px;
 }
 #scoreBoard{
     background: #345;
@@ -122,7 +118,7 @@ body{
     #gameBoard{ 
         width: 280px; 
         height: 560px;
-        bottom: 70px;
+        top: -70px;
     }
     .box ,.boxed{
         width: 26px;
@@ -145,7 +141,7 @@ body{
         left: 0;
         width: 220px; 
         height: 440px;
-        bottom: 66px;
+        top: -66px;
     }
     .box ,.boxed{
         width: 20px;
@@ -171,7 +167,7 @@ body{
         left: 0;
         width: 320px; 
         height: 640px;
-        bottom: 73px;
+        top: -73px;
 
     }
     .box ,.boxed{
@@ -199,7 +195,7 @@ body{
         left: 0;
         width: 400px; 
         height: 800px;
-        bottom: 120px;
+        top: -120px;
     }
     .box ,.boxed{
         width: 38px;
