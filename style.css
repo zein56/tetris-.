@@ -1,4 +1,7 @@
-body{
+html, body {
+    touch-action: manipulation;
+  }
+  body{
     background:  #123;
     height: 100vh;
     padding: 0px;
