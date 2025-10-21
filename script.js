@@ -1,23 +1,32 @@
 let nextBlock;
 let Rblock;
-let randomIndex;
+let randomIndex; 
+var score = 0;
+var combo = 0;
+let speed = 1000-score;
 
-initBoard()
 function initBoard(){
+    score = 0;
+    combo = 0;
+    document.getElementById('combo').innerHTML = 'X'+combo/5;
+    document.getElementById('score').innerHTML = score;
+    document.getElementById('bestScore').innerHTML = localStorage.getItem('bestScore');
     board = document.getElementById('gameBoard');
+    board.innerHTML = '';
     for (let i = 0; i < 230; i++) {
         if (i<10) {
         board.innerHTML += '<div class="box" id="0'+i+'"></div>'
         }else
         board.innerHTML += '<div class="box" id="'+i+'"></div>'
     }
-    startGame()
+    
 }
  
 
-
+startGame()
 //
 function startGame(){
+    initBoard()
     let generateRandom = generateBlock()
     AddBlock(generateRandom[0],generateRandom[1])
 }
@@ -227,37 +236,56 @@ function rotate(){
     }
 }
  
-setInterval(function(){
+function gameLoop() {
+    let gameOver = false;
     let Drop = 1;
-    let blocks = document.getElementsByClassName("block")
+    let blocks = document.getElementsByClassName("block");
+
     for (let i = 0; i < blocks.length; i++) {
         const element = +blocks[i].parentNode.id;
-        if (element+10 <230 && document.getElementById(+element+10).className == "box") {
-        }else{ 
+        if (element + 10 < 230 && document.getElementById(element + 10).className == "box") {
+            // boşta
+        } else {
             Drop = 0;
             break;
         }
-    } 
-    if (Drop) {  
-        for (let i = blocks.length-1; i >= 0; i--) {
-            const element = +blocks[i].parentNode.id;
-            document.getElementById(element+10).innerHTML = document.getElementById(element).innerHTML
-            document.getElementById(element).innerHTML = "" 
-        }
-    }else{
-        for (let i = blocks.length-1; i >= 0; i--) {
-            const element = blocks[i];
-            document.getElementById(+blocks[i].parentNode.id).className = "boxed"
-            element.className = "blocked"
-        }
-        lineTest()
-        document.getElementById('combo').innerHTML = 'X'+combo/5;
-        document.getElementById('score').innerHTML = score;
-        setTimeout(function(){
-            AddBlock(nextBlock[0],nextBlock[1])
-        },500)
     }
-},1000) 
+
+    if (Drop) {
+        for (let i = blocks.length - 1; i >= 0; i--) {
+            const element = +blocks[i].parentNode.id;
+            document.getElementById(element + 10).innerHTML = document.getElementById(element).innerHTML;
+            document.getElementById(element).innerHTML = "";
+        }
+    } else {
+        for (let i = blocks.length - 1; i >= 0; i--) {
+            const boxId = +blocks[i].parentNode.id;
+            const element = blocks[i];
+            document.getElementById(boxId).className = "boxed";
+            element.className = "blocked";
+
+            if (boxId >= 30 && boxId < 40) {
+                gameOver = true;
+            }
+        }
+
+        if (!lineTest(gameOver)) return;
+
+        speed = 1000 - score;
+        document.getElementById('combo').innerHTML = 'X' + combo / 5;
+        document.getElementById('score').innerHTML = score;
+
+        setTimeout(function() {
+            AddBlock(nextBlock[0], nextBlock[1]);
+        }, 500);
+    }
+
+    speed =1000 -score; //console.log(speed)
+    setTimeout(gameLoop, speed);
+}
+
+gameLoop();
+
 
 
 function Left(){
@@ -323,9 +351,8 @@ function down(){
     }
 }
 
-var score = 0;
-var combo = 0;
-function lineTest(){
+
+function lineTest(gameOver){
     for (let i = 0; i < 23; i++) {
         let line = 1
         for (let j = 0; j < 10; j++) {
@@ -353,13 +380,16 @@ function lineTest(){
             
             score+=10+combo;
             combo+=5;
-            //console.log(score)
-            //document.getElementById('combo').innerHTML = 'X'+combo/5;
-            //document.getElementById('score').innerHTML = score;
         }else{
             combo = 0;
+            
         }
     }
+    if (gameOver) {
+        GameOver();
+        return 0;
+    }else
+        return 1;
 }
 
 //// touch
@@ -414,3 +444,11 @@ document.body.addEventListener('touchmove', e => {
     }
     
 })
+
+function GameOver(){
+    if (score > localStorage.getItem('bestScore')) {
+        localStorage.setItem('bestScore',score)
+    }
+    alert('game over')
+    startGame();
+}
